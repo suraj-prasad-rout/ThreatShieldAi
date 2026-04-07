@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ThreatShield — AI Cybersecurity</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #080c10;
+    --surface: #0d1117;
+    --surface2: #131a24;
+    --border: rgba(0,220,150,0.12);
+    --accent: #00dc96;
+    --accent2: #00a8ff;
+    --danger: #ff3d5a;
+    --text: #e8f0ec;
+    --muted: #7a8f84;
+    --mono: 'Space Mono', monospace;
+    --sans: 'Syne', sans-serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ---- grid bg ---- */
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 0;
+    background-image:
+      linear-gradient(rgba(0,220,150,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,220,150,0.03) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+  }
+
+  /* ---- NAV ---- */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 clamp(1.5rem, 5vw, 5rem);
+    height: 64px;
+    background: rgba(8,12,16,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-logo {
+    display: flex; align-items: center; gap: 10px;
+    font-family: var(--mono); font-weight: 700; font-size: 1rem;
+    color: var(--accent); text-decoration: none; letter-spacing: 0.02em;
+  }
+  .nav-logo svg { width: 28px; height: 28px; }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    font-size: 0.8rem; font-family: var(--mono); color: var(--muted);
+    text-decoration: none; letter-spacing: 0.08em; text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+  .nav-cta {
+    background: var(--accent); color: #040f0a;
+    border: none; padding: 8px 20px; border-radius: 4px;
+    font-family: var(--mono); font-size: 0.78rem; font-weight: 700;
+    cursor: pointer; text-decoration: none; letter-spacing: 0.06em;
+    transition: opacity 0.2s, transform 0.15s;
+  }
+  .nav-cta:hover { opacity: 0.88; transform: translateY(-1px); }
+
+  section { position: relative; z-index: 1; }
+
+  /* ---- HERO ---- */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center;
+    padding: 6rem clamp(1.5rem, 8vw, 8rem) 4rem;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(0,220,150,0.08); border: 1px solid rgba(0,220,150,0.25);
+    border-radius: 20px; padding: 6px 16px;
+    font-family: var(--mono); font-size: 0.72rem; color: var(--accent);
+    letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 2rem;
+    animation: fadeUp 0.6s ease both;
+  }
+  .hero-badge span { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; animation: pulse 1.8s infinite; }
+  .hero h1 {
+    font-size: clamp(2.8rem, 8vw, 6rem); font-weight: 800; line-height: 1.05;
+    letter-spacing: -0.02em; margin-bottom: 1.5rem;
+    animation: fadeUp 0.7s 0.1s ease both;
+  }
+  .hero h1 em { font-style: normal; color: var(--accent); }
+  .hero p {
+    max-width: 580px; font-size: clamp(1rem, 2vw, 1.2rem); color: var(--muted);
+    margin-bottom: 3rem; line-height: 1.75;
+    animation: fadeUp 0.7s 0.2s ease both;
+  }
+  .hero-actions {
+    display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;
+    animation: fadeUp 0.7s 0.3s ease both;
+  }
+  .btn-primary {
+    background: var(--accent); color: #040f0a;
+    padding: 14px 32px; border-radius: 4px; border: none;
+    font-family: var(--mono); font-weight: 700; font-size: 0.85rem;
+    cursor: pointer; text-decoration: none; letter-spacing: 0.05em;
+    transition: opacity 0.2s, transform 0.15s;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .btn-primary:hover { opacity: 0.88; transform: translateY(-2px); }
+  .btn-secondary {
+    background: transparent; color: var(--text);
+    padding: 14px 32px; border-radius: 4px; border: 1px solid var(--border);
+    font-family: var(--mono); font-size: 0.85rem;
+    cursor: pointer; text-decoration: none; letter-spacing: 0.05em;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* threat ticker */
+  .ticker-wrap {
+    margin-top: 4rem; width: 100%;
+    overflow: hidden;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 0;
+    animation: fadeUp 0.7s 0.5s ease both;
+  }
+  .ticker {
+    display: flex; gap: 3rem; width: max-content;
+    animation: ticker 28s linear infinite;
+    font-family: var(--mono); font-size: 0.72rem; color: var(--muted);
+    letter-spacing: 0.08em;
+  }
+  .ticker .threat { color: var(--danger); }
+  .ticker .safe { color: var(--accent); }
+
+  /* ---- STATS ---- */
+  .stats {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1px; background: var(--border);
+    border: 1px solid var(--border); margin: 0 clamp(1.5rem, 6vw, 6rem) 6rem;
+    border-radius: 8px; overflow: hidden;
+  }
+  .stat {
+    background: var(--surface); padding: 2.5rem 2rem; text-align: center;
+  }
+  .stat-num {
+    font-family: var(--mono); font-size: 2.5rem; font-weight: 700;
+    color: var(--accent); line-height: 1;
+    display: block; margin-bottom: 0.5rem;
+  }
+  .stat-label { font-size: 0.8rem; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; }
+
+  /* ---- HOW IT WORKS ---- */
+  .section-label {
+    font-family: var(--mono); font-size: 0.72rem; color: var(--accent);
+    letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 1rem;
+  }
+  .section-title {
+    font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 800; line-height: 1.1;
+    margin-bottom: 1rem; letter-spacing: -0.01em;
+  }
+  .section-sub { color: var(--muted); max-width: 520px; font-size: 1rem; }
+
+  .how { padding: 6rem clamp(1.5rem, 6vw, 6rem); }
+  .how-header { margin-bottom: 4rem; }
+  .steps {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+  }
+  .step {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 8px; padding: 2rem;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .step:hover { border-color: rgba(0,220,150,0.35); transform: translateY(-4px); }
+  .step-num {
+    font-family: var(--mono); font-size: 0.7rem; color: var(--accent);
+    letter-spacing: 0.1em; margin-bottom: 1rem;
+  }
+  .step-icon {
+    width: 44px; height: 44px; margin-bottom: 1.2rem;
+    background: rgba(0,220,150,0.08); border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .step-icon svg { width: 22px; height: 22px; }
+  .step h3 { font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; }
+  .step p { font-size: 0.88rem; color: var(--muted); line-height: 1.6; }
+
+  /* ---- FEATURES ---- */
+  .features { padding: 6rem clamp(1.5rem, 6vw, 6rem); background: var(--surface); }
+  .features-header { margin-bottom: 4rem; }
+  .feature-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+  .feature-card {
+    background: var(--bg); border: 1px solid var(--border);
+    border-radius: 8px; padding: 2rem;
+    transition: border-color 0.3s, transform 0.3s;
+    position: relative; overflow: hidden;
+  }
+  .feature-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .feature-card:hover { border-color: rgba(0,220,150,0.3); transform: translateY(-3px); }
+  .feature-card:hover::before { opacity: 1; }
+  .feature-icon {
+    font-size: 1.6rem; margin-bottom: 1rem; display: block;
+  }
+  .feature-card h3 { font-size: 1.05rem; font-weight: 600; margin-bottom: 0.5rem; }
+  .feature-card p { font-size: 0.87rem; color: var(--muted); line-height: 1.65; }
+  .tag {
+    display: inline-block; margin-top: 1rem;
+    background: rgba(0,220,150,0.08); color: var(--accent);
+    border-radius: 3px; padding: 3px 10px;
+    font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.08em;
+  }
+
+  /* ---- DOWNLOAD ---- */
+  .download { padding: 6rem clamp(1.5rem, 6vw, 6rem); }
+  .download-box {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; padding: 4rem;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 3rem; flex-wrap: wrap;
+  }
+  .download-info h2 {
+    font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 800; margin-bottom: 0.75rem;
+  }
+  .download-info h2 em { font-style: normal; color: var(--accent); }
+  .download-info p { color: var(--muted); max-width: 420px; font-size: 0.95rem; }
+  .download-btns { display: flex; flex-direction: column; gap: 0.75rem; }
+  .dl-btn {
+    display: flex; align-items: center; gap: 12px;
+    background: var(--bg); border: 1px solid var(--border);
+    border-radius: 6px; padding: 14px 24px; min-width: 220px;
+    text-decoration: none; color: var(--text);
+    transition: border-color 0.2s, transform 0.2s;
+    font-family: var(--mono); font-size: 0.82rem;
+  }
+  .dl-btn:hover { border-color: var(--accent); transform: translateX(4px); }
+  .dl-btn svg { width: 18px; height: 18px; color: var(--accent); flex-shrink: 0; }
+  .dl-btn-label { color: var(--muted); font-size: 0.68rem; display: block; margin-top: 1px; }
+  .version-note {
+    font-family: var(--mono); font-size: 0.72rem; color: var(--muted);
+    margin-top: 1rem; letter-spacing: 0.05em;
+  }
+
+  /* ---- FOOTER ---- */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 3rem clamp(1.5rem, 6vw, 6rem);
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 1rem;
+    font-family: var(--mono); font-size: 0.75rem; color: var(--muted);
+  }
+  footer a { color: var(--muted); text-decoration: none; }
+  footer a:hover { color: var(--accent); }
+  .footer-copy { display: flex; flex-direction: column; gap: 4px; }
+  .footer-links { display: flex; gap: 1.5rem; }
+  .copyright-notice {
+    font-size: 0.65rem; color: rgba(122,143,132,0.6); margin-top: 4px;
+  }
+
+  /* ---- ANIMATIONS ---- */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+  @keyframes ticker {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  @media (max-width: 600px) {
+    .nav-links { display: none; }
+    .download-box { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M14 2L4 6.5V14c0 5.25 4.2 9.8 10 11 5.8-1.2 10-5.75 10-11V6.5L14 2z" fill="rgba(0,220,150,0.15)" stroke="#00dc96" stroke-width="1.5" stroke-linejoin="round"/>
+      <path d="M10 14l3 3 5-5" stroke="#00dc96" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    ThreatShield
+  </a>
+  <ul class="nav-links">
+    <li><a href="#features">Features</a></li>
+    <li><a href="#download">Download</a></li>
+  </ul>
+  <a href="#download" class="nav-cta">Free Download</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge"><span></span> AI-Powered Protection — Always On</div>
+  <h1>Your <em>AI Shield</em><br>Against Cyber Threats</h1>
+  <p>ThreatShield runs silently in the background, detecting phishing emails, dangerous files, and malicious websites before they reach you — using machine learning that adapts to your environment.</p>
+  <div class="hero-actions">
+    <a href="#download" class="btn-primary">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 3v13M6 11l6 6 6-6"/><path d="M3 20h18"/></svg>
+      Download Free
+    </a>
+    <a href="#features" class="btn-secondary">See Features</a>
+  </div>
+
+  <div class="ticker-wrap">
+    <div class="ticker">
+      <span class="threat">⚠ Phishing email blocked</span>
+      <span class="safe">✓ Endpoint scan clean</span>
+      <span class="threat">⚠ Malicious URL intercepted</span>
+      <span class="safe">✓ Sandbox analysis complete</span>
+      <span class="threat">⚠ Suspicious script quarantined</span>
+      <span class="safe">✓ DNS threat filtered</span>
+      <span class="threat">⚠ Spoofed sender detected</span>
+      <span class="safe">✓ ML model updated</span>
+      <!-- duplicate for seamless loop -->
+      <span class="threat">⚠ Phishing email blocked</span>
+      <span class="safe">✓ Endpoint scan clean</span>
+      <span class="threat">⚠ Malicious URL intercepted</span>
+      <span class="safe">✓ Sandbox analysis complete</span>
+      <span class="threat">⚠ Suspicious script quarantined</span>
+      <span class="safe">✓ DNS threat filtered</span>
+      <span class="threat">⚠ Spoofed sender detected</span>
+      <span class="safe">✓ ML model updated</span>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat"><span class="stat-num">3</span><span class="stat-label">Shield Layers</span></div>
+  <div class="stat"><span class="stat-num">100%</span><span class="stat-label">Local Inference</span></div>
+  <div class="stat"><span class="stat-num">0</span><span class="stat-label">Data Sent Externally</span></div>
+  <div class="stat"><span class="stat-num">Real-time</span><span class="stat-label">Threat Detection</span></div>
+</div>
+
+<!-- FEATURES -->
+<section class="features" id="features">
+  <div class="features-header">
+    <p class="section-label">Features</p>
+    <h2 class="section-title">Everything you need, nothing you don't</h2>
+  </div>
+  <div class="feature-grid">
+    <div class="feature-card">
+      <span class="feature-icon"></span>
+      <h3>Email Shield</h3>
+      <p>Catches phishing, spoofed senders, and malicious links in real time before you click anything.</p>
+      <span class="tag">AI-Powered</span>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon"></span>
+      <h3>Endpoint Sandbox</h3>
+      <p>Downloads and executables are sandboxed and behaviour-analysed before being allowed near your data.</p>
+      <span class="tag">Isolated Environment</span>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon"></span>
+      <h3>Web Shield</h3>
+      <p>Custom local DNS server blocks malicious domains at the network layer — before the browser even connects.</p>
+      <span class="tag">DNS-Level Blocking</span>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon"></span>
+      <h3>Browser Extension</h3>
+      <p>Chrome companion extension warns you before visiting flagged URLs, synced live with the desktop agent.</p>
+      <span class="tag">Chrome Extension</span>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon"></span>
+      <h3>Adaptive ML Model</h3>
+      <p>Locally trained model learns from your environment. No cloud dependency. No data leaves your machine.</p>
+      <span class="tag">100% Local</span>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon"></span>
+      <h3>Quarantine & Restore</h3>
+      <p>Flagged files are safely quarantined with a full audit log and one-click restore if needed.</p>
+      <span class="tag">Full Audit Trail</span>
+    </div>
+  </div>
+</section>
+
+<!-- DOWNLOAD -->
+<section class="download" id="download">
+  <div class="download-box">
+    <div class="download-info">
+      <p class="section-label">Download</p>
+      <h2>Get <em>ThreatShield</em> free</h2>
+      <p>One installer. Works on Windows and Linux. No account required. No telemetry. Your data stays on your machine.</p>
+      <p class="version-note">v1.0.0 · Requires Windows 10+ or Ubuntu 20.04+</p>
+    </div>
+    <div class="download-btns">
+
+  <!-- Windows -->
+  <a href="https://github.com/suraj-prasad-rout/ThreatShieldAi/releases/tag/v1.0.0" class="dl-btn">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M12 3v13M6 11l6 6 6-6"/>
+      <path d="M3 20h18"/>
+    </svg>
+    <div>
+      <span>Download for Windows</span>
+      <span class="dl-btn-label">v1.0.0 · Installer (.exe)</span>
+    </div>
+  </a>
+
+  <!-- Linux -->
+  <a href="https://github.com/suraj-prasad-rout/ThreatShieldAi/releases/tag/v1.0.0" class="dl-btn">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M12 3v13M6 11l6 6 6-6"/>
+      <path d="M3 20h18"/>
+    </svg>
+    <div>
+      <span>Download for Linux</span>
+      <span class="dl-btn-label">v1.0.0 · Archive (.tar.gz)</span>
+    </div>  
+  </a>
+
+  <!-- GitHub -->
+  <a href="https://github.com/suraj-prasad-rout/ThreatShieldAi" class="dl-btn">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="12" cy="12" r="10"/>
+      <path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72"/>
+      <path d="M19.5 5.09c-3.72 4.35-8.94 5.66-16.88 5.85"/>
+    </svg>
+    <div>
+      <span>View on GitHub</span>
+      <span class="dl-btn-label">Source code & documentation</span>
+    </div>
+  </a>
+
+</div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-copy">
+    <span>© 2025 ThreatShield · All rights reserved</span>
+    <span class="copyright-notice">Proprietary software. Unauthorised copying, distribution, or reverse engineering is strictly prohibited.</span>
+  </div>
+  <div class="footer-links">
+    <a href="https://github.com/suraj-prasad-rout/ThreatShieldAi/blob/main/LICENSE.md">License</a>
+    <a href="https://github.com/suraj-prasad-rout">GitHub</a>
+    <a href="mailto:surajprasadrout@gmail.com">Report a Bug</a>
+  </div>
+</footer>
+
+</body>
+</html>
