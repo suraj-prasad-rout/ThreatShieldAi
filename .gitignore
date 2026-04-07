@@ -1,0 +1,75 @@
+# ============================================================
+# ThreatShield — .gitignore
+# ============================================================
+
+# ----- Python cache & bytecode -----
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+.pytest_cache/
+
+# ----- Virtual environments -----
+venv/
+env/
+.env/
+.venv/
+
+# ----- Build artifacts -----
+build/
+dist/
+*.spec
+*.egg-info/
+*.egg
+
+# ----- Trained ML model (regenerate locally) -----
+models/threat_model.pkl
+
+# ----- Runtime data & logs -----
+data/config.json
+data/dismissed_emails.json
+data/learned_patterns.json
+data/threat_log.json
+data/threatshield.log
+data/url_cache.json
+
+# ----- Sandbox / quarantine (may contain real malware) -----
+data/sandbox_reports/
+data/sandbox_extract/
+data/quarantine/
+
+# ----- Secrets & credentials -----
+.env
+*.key
+*.pem
+secrets.json
+credentials.json
+
+# ----- OS junk -----
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ----- IDE/editor -----
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ----- Test artifacts -----
+test_zip.py
+test_zip2.py
+test_detector.py
+update_storage.py
+.coverage
+htmlcov/
+
+# ----- Installer/release (build locally, distribute via Releases) -----
+build/assets/
+build/*.nsi
+build/*.bat
+build/*.sh
+dist/ThreatShield/*.exe
+*.exe
+*.pyd
+secret.key

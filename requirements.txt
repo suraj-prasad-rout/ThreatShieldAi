@@ -1,0 +1,16 @@
+# Runtime
+pystray==0.19.5
+Pillow==10.3.0
+watchdog==4.0.1
+psutil==5.9.8
+requests==2.32.3
+
+# AI / ML  (local — no cloud)
+scikit-learn==1.5.0
+spacy==3.7.4
+
+# Testing
+pytest==8.2.1
+
+# Optional: Windows toast notifications
+# win10toast==0.9
