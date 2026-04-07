@@ -1,7 +1,3 @@
-<div align="center">
-
-<img src="build/assets/icon.png" width="96" alt="ThreatShield Logo" />
-
 # ThreatShield
 
 **AI-powered cybersecurity for everyday users.**  
@@ -25,7 +21,26 @@ It is designed for everyday users, delivering enterprise-grade protection withou
 
 ## Features
 
+<p align="center">
+  <img src="assets/images/dashboard.png" width="700">
+</p>
+
+- Dashboard
+
+### Threat Logs
+
+<p align="center">
+  <img src="assets/images/threatlog.png" width="600">
+</p>
+
+- Tracks all detected threats
+- Maintains history for analysis
+
 ### Email Shield
+
+<p align="center">
+  <img src="assets/images/email_detection.png" width="600">
+</p>
 
 - Detects phishing and social-engineering emails in real time
 - Flags suspicious sender patterns, spoofed domains, and malicious links
@@ -33,21 +48,67 @@ It is designed for everyday users, delivering enterprise-grade protection withou
 
 ### Endpoint Shield
 
+<p align="center">
+  <img src="assets/images/endpoint.png" width="600">
+</p>
+
 - Sandboxes suspicious files before they execute
 - Behavioural analysis of scripts, executables, and archives
 - Automatic quarantine with restore capability
 
+### Sandbox Analysis
+
+<p align="center">
+  <img src="assets/images/sandbox.png" width="600">
+</p>
+
+- Executes suspicious files in isolated environment
+- Detects malicious behavior before system impact
+
 ### Web Shield
+
+<p align="center">
+  <img src="assets/images/web_block.png" width="600">
+</p>
 
 - Custom DNS server blocks known malicious domains
 - Local block page served instantly on threat detection
 - URL reputation cache for fast repeated lookups
 
+### Quarantine System
+
+<p align="center">
+  <img src="assets/images/quarantine.png" width="600">
+</p>
+
+- Safely isolates malicious files
+- Allows restore if needed
+
+### Domain Blocking
+
+<p align="center">
+  <img src="assets/images/web_domain_block.png" width="600">
+</p>
+
+- Prevents access to known malicious domains
+
 ### Browser Extension
+
+<p align="center">
+  <img src="./images/extension.png" width="600">
+</p>
 
 - Companion extension for Chrome/Chromium
 - Warns before visiting flagged URLs
 - Syncs with the desktop daemon in real time
+
+### Community Reporting
+
+<p align="center">
+  <img src="assets/images/community.png" width="600">
+</p>
+
+- Share and receive threat intelligence
 
 ### Adaptive ML Model
 
@@ -96,13 +157,14 @@ Download the latest installer from the [Releases](../../releases) page and run:
 
 **Requirements:** Python 3.12+, pip
 
-````bash
+```bash
 git clone https://github.com/suraj-prasad-rout/ThreatShieldAi.git
 cd ThreatShieldAi
 pip install -r requirements.txt
 python main.py
 **Requirements:** Python 3.12+, pip
 
+```
 
 ### Browser Extension
 
@@ -165,19 +227,14 @@ ThreatShield is **proprietary software**. All rights reserved.
 
 You may not copy, modify, distribute, sublicense, or reverse-engineer any part of this software without explicit written permission from the author.
 
-See [LICENSE.txt](LICENSE.txt) for full terms.
-
----
+See [LICENSE.md](LICENSE.md) for full terms.
 
 ## Disclaimer
 
-ThreatShield is a security tool, not a guarantee. It significantly reduces risk but does not replace good security hygiene. Always keep your OS and software updated.
-
----
+ThreatShield is a security tool, not a guarantee. It significantly reduces risk but does not replace good security hygiene. Always keep your OS and software updated
 
 <div align="center">
 
 Made with care · © 2026 Suraj Prasad Rout
 
 </div>
-````
