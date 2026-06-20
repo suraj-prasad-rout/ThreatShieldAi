@@ -5,7 +5,7 @@ Real-time phishing detection · Endpoint sandboxing · Web threat blocking · Br
 
 [![License: Proprietary](https://img.shields.io/badge/License-Proprietary-red.svg)](#license)
 [![Python](https://img.shields.io/badge/Python-3.12-blue.svg)](https://python.org)
-[![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Linux-lightgrey.svg)](#installation)
+[![Platform](https://img.shields.io/badge/Platform-Windows-lightgrey.svg)](#installation)
 
 </div>
 
