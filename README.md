@@ -22,7 +22,7 @@ It is designed for everyday users, delivering enterprise-grade protection withou
 ## Features
 
 <p align="center">
-  <img src="assets/images/dashboard.png" width="700">
+  <img src="images/dashboard.png" width="700">
 </p>
 
 - Dashboard
@@ -30,7 +30,7 @@ It is designed for everyday users, delivering enterprise-grade protection withou
 ### Threat Logs
 
 <p align="center">
-  <img src="assets/images/threatlog.png" width="600">
+  <img src="/images/threatlog.png" width="600">
 </p>
 
 - Tracks all detected threats
@@ -39,7 +39,7 @@ It is designed for everyday users, delivering enterprise-grade protection withou
 ### Email Shield
 
 <p align="center">
-  <img src="assets/images/email_detection.png" width="600">
+  <img src="/images/email_detection.png" width="600">
 </p>
 
 - Detects phishing and social-engineering emails in real time
@@ -49,7 +49,7 @@ It is designed for everyday users, delivering enterprise-grade protection withou
 ### Endpoint Shield
 
 <p align="center">
-  <img src="assets/images/endpoint.png" width="600">
+  <img src="/images/endpoint.png" width="600">
 </p>
 
 - Sandboxes suspicious files before they execute
@@ -59,35 +59,38 @@ It is designed for everyday users, delivering enterprise-grade protection withou
 ### Sandbox Analysis
 
 <p align="center">
-  <img src="assets/images/sandbox.png" width="600">
+  <img src="/images/sandbox.png" width="600">
 </p>
 
 - Executes suspicious files in isolated environment
 - Detects malicious behavior before system impact
 
+
+### Quarantine System
+
+<p align="center">
+  <img src="/images/quarentine.png" width="600">
+</p>
+
+- Safely isolates malicious files
+- Allows restore if needed
+
+
 ### Web Shield
 
 <p align="center">
-  <img src="assets/images/web_block.png" width="600">
+  <img src="/images/web_block.png" width="600">
 </p>
 
 - Custom DNS server blocks known malicious domains
 - Local block page served instantly on threat detection
 - URL reputation cache for fast repeated lookups
 
-### Quarantine System
-
-<p align="center">
-  <img src="assets/images/quarantine.png" width="600">
-</p>
-
-- Safely isolates malicious files
-- Allows restore if needed
 
 ### Domain Blocking
 
 <p align="center">
-  <img src="assets/images/web_domain_block.png" width="600">
+  <img src="/images/web_domain_block.png" width="600">
 </p>
 
 - Prevents access to known malicious domains
@@ -105,7 +108,7 @@ It is designed for everyday users, delivering enterprise-grade protection withou
 ### Community Reporting
 
 <p align="center">
-  <img src="assets/images/community.png" width="600">
+  <img src="/images/comunity.png" width="600">
 </p>
 
 - Share and receive threat intelligence
