@@ -21,7 +21,26 @@ import os
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 
+def _fix_ssl_for_frozen_exe():
+    """
+    In a PyInstaller frozen EXE, Python cannot find SSL certificates
+    automatically. This causes IMAP (email shield) to silently fail
+    with SSL errors. We point ssl/certifi to the bundled certs.
+    This must run BEFORE any network connections are made.
+    """
+    if not getattr(sys, 'frozen', False):
+        return  # only needed in frozen EXE, not in python main.py
+    try:
+        import certifi
+        cert_file = certifi.where()
+        os.environ['SSL_CERT_FILE'] = cert_file
+        os.environ['REQUESTS_CA_BUNDLE'] = cert_file
+    except Exception:
+        pass  # certifi not bundled — ssl will use system certs
+
+
 def main():
+    _fix_ssl_for_frozen_exe()   # must be first — fixes email IMAP SSL in EXE
     args = sys.argv[1:]
     background = "--background" in args or "--daemon" in args
 
